@@ -218,3 +218,10 @@
   1.比特币：redis VS Bloom Filter，redis是存在内存里，而Bloom Filter是来判断是否在不在。
   2.Map Reduce系统
 
+## 面试答题四件套
+- 1.Clarification (询问题目细节、边界条件、可能的极端错误情况)
+- 2.Possible Solution (所有可能的解法都和面试官沟通一遍)
+  Compare Time & Space Complexity (时间复杂度&空间复杂度)
+  Optimal Solution (最优解 )
+- 3.Coding (写代码)
+- 4.Test Cases (测试用例)
