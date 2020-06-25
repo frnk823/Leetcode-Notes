@@ -220,8 +220,18 @@
 
 ## 面试答题四件套
 - 1.Clarification (询问题目细节、边界条件、可能的极端错误情况)
+
 - 2.Possible Solution (所有可能的解法都和面试官沟通一遍)
   Compare Time & Space Complexity (时间复杂度&空间复杂度)
   Optimal Solution (最优解 )
+  
 - 3.Coding (写代码)
+
 - 4.Test Cases (测试用例)
+
+- ## 斐波那契
+  - O（N）的方法为多次乘以矩阵[[1,1],[1,0]]
+
+- ## pow（x，y）
+  - 1.分治
+  - 2.二进制做法
