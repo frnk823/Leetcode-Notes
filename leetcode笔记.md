@@ -2,8 +2,61 @@
 
 
 ## 链表
--**206 24 141**
+-**206反转单向链表**
+```python
+class Solution:
+    def reverseList(self, head: ListNode) -> ListNode:
+        pre, cur = None, head
+        while cur:
+            cur.next,pre, cur = pre, cur, cur.next
+        return pre
+```
+- **141 环形链表**
+```python
+class Solution:
+    def hasCycle(self, head: ListNode) -> bool:
+        p1, p2 = head, head
+        while(p1 and p2 and p2.next):
+            p1, p2 = p1.next, p2.next.next
+            if (p1 == p2):
+                return True
+        return False
+```
+** 24**
   自己写
+**234 回文链表**
+```python
+class Solution:
+    def isPalindrome(self, head: ListNode) -> bool:
+        res = []
+        cur = head
+        while cur:
+            res.append(cur.val)
+            cur = cur.next
+        p1, p2 = 0, len(res)-1
+        while p1 <= p2:
+            if res[p1] != res[p2]:
+                return False
+            p1 += 1
+            p2 -= 1
+        return True
+```
+方法2是先用快慢指针找出中点，对后半部进行反转，然后判断是否回文，再恢复，能减小空间复杂度
+**138. 复制带随机指针的链表**
+```python
+#dfs
+class Solution:
+    def copyRandomList(self, head: 'Node') -> 'Node':
+        lookup = {}
+        def dfs(node):
+            if not node: return None
+            if node in lookup: return lookup[node]
+            copy = Node(node.val)
+            lookup[node] = copy
+            copy.next, copy.random = dfs(node.next), dfs(node.random)
+            return lookup[node]
+        return dfs(head)
+```
 
 ## stack/queue
 -**20 判断括号是否有效**
