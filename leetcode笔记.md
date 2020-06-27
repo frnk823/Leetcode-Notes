@@ -23,8 +23,19 @@ class Solution:
                 return True
         return False
 ```
-- **24**
-  自己写
+- **24. 两两交换链表中的节点 （背）**
+```python
+class Solution:
+    def swapPairs(self, head: ListNode) -> ListNode:
+        if not head or not head.next: return head
+        dummy = ListNode(0, head)
+        pre = dummy
+        while pre.next and pre.next.next:
+            a, b = pre.next, pre.next.next
+            pre.next, a.next, b.next = b, b.next, a
+            pre = a
+        return dummy.next 
+```
 - **234 回文链表**
 ```python
 class Solution:
@@ -87,6 +98,36 @@ class Solution:
         # 一边到头了，则剩下的直接合并就好
         p.next = r if r else l
         return dummy.next
+```
+- **160. 相交链表**
+  简单的方法就是用一个list存a的路径，然后遍历b找有没有节点在a里，有的话返回
+还有一种方法是双指针的，使用的技巧在于一遍走完了换到另一边，这样ab最后都会走同样的步数，会在相交的地方相遇，如果不相交，则会在链表结尾的None相遇，正常退出循环
+```python
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        p1, p2 = headA, headB
+        while p1 != p2:
+            p1 = p1.next if p1 else headB
+            p2 = p2.next if p2 else headA
+        return p1
+```
+- **328. 奇偶链表**
+  双指针递推
+```python
+class Solution:
+    def oddEvenList(self, head: ListNode) -> ListNode:
+        if not head or not head.next: return head
+        p1, p2, tmp = head, head.next, head.next
+        while p1.next.next and p2.next.next:
+            p1.next, p2.next = p1.next.next, p2.next.next
+            p1, p2 = p1.next, p2.next
+        if p1.next.next:
+            p1.next = p1.next.next
+            p1 = p1.next
+        p1.next = tmp
+        p2.next = None
+        
+        return head
 ```
 
 ## stack/queue
