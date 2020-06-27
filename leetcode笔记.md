@@ -2,7 +2,8 @@
 
 
 ## 链表
--**206反转单向链表**
+- **206反转单向链表**
+
 ```python
 class Solution:
     def reverseList(self, head: ListNode) -> ListNode:
@@ -22,9 +23,9 @@ class Solution:
                 return True
         return False
 ```
-** 24**
+- **24**
   自己写
-**234 回文链表**
+- **234 回文链表**
 ```python
 class Solution:
     def isPalindrome(self, head: ListNode) -> bool:
@@ -42,7 +43,7 @@ class Solution:
         return True
 ```
 方法2是先用快慢指针找出中点，对后半部进行反转，然后判断是否回文，再恢复，能减小空间复杂度
-**138. 复制带随机指针的链表**
+- **138. 复制带随机指针的链表**
 ```python
 #dfs
 class Solution:
@@ -57,7 +58,7 @@ class Solution:
             return lookup[node]
         return dfs(head)
 ```
-**148. 排序链表**
+- **148. 排序链表**
   归并排序，找中间节点可以巧用快慢指针的方法做差值
 ```python
 class Solution:
@@ -89,13 +90,13 @@ class Solution:
 ```
 
 ## stack/queue
--**20 判断括号是否有效**
+- **20 判断括号是否有效**
   补充
--**232 225 stack和queue互相实现**
+- **232 225 stack和queue互相实现**
   补充
--**703 返回数据流中的第K大元素**
+- **703 返回数据流中的第K大元素**
   1.用优先队列实现
--**239 滑动窗口输出最大值**
+- **239 滑动窗口输出最大值**
   1.用优先队列（大根堆）做，每次删除滑出数字，加入新的数字并维护O（logN），查找最大数字O（1）
   2.数组实现dequeue，数组左边保留最大值
 
