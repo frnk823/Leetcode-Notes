@@ -3,7 +3,6 @@
 
 ## 链表
 - **206反转单向链表**
-
 ```python
 class Solution:
     def reverseList(self, head: ListNode) -> ListNode:
@@ -128,6 +127,21 @@ class Solution:
         p2.next = None
         
         return head
+```
+- **19. 删除链表的倒数第N个节点**
+  快慢指针法，但是由于存在删除第一个节点的情况，要建一个dummy node
+```python
+class Solution:
+    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
+        dummy = ListNode(0, head)
+        slow, fast = dummy, dummy
+        for _ in range(n):
+            fast = fast.next
+        while fast.next:
+            fast = fast.next
+            slow = slow.next
+        slow.next = slow.next.next
+        return dummy.next
 ```
 
 ## stack/queue
