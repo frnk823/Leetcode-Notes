@@ -57,6 +57,36 @@ class Solution:
             return lookup[node]
         return dfs(head)
 ```
+**148. 排序链表**
+  归并排序，找中间节点可以巧用快慢指针的方法做差值
+```python
+class Solution:
+    def sortList(self, head: ListNode) -> ListNode:
+        if not head or not head.next: return head
+        slow, fast = head, head
+        while fast.next and fast.next.next:
+            slow = slow.next
+            fast = fast.next.next
+        node = slow.next
+        slow.next = None
+        left = self.sortList(head)
+        right = self.sortList(node)
+        return self.merge(left, right)
+    
+    def merge(self, l, r):
+        dummy = ListNode(0)
+        p = dummy
+        while l and r:
+            if l.val < r.val:
+                p.next = l
+                p, l = p.next, l.next
+            else:
+                 p.next = r
+                 p, r = p.next, r.next
+        # 一边到头了，则剩下的直接合并就好
+        p.next = r if r else l
+        return dummy.next
+```
 
 ## stack/queue
 -**20 判断括号是否有效**
@@ -101,10 +131,36 @@ class Solution:
 
 ## 递归/分治
 - 有两个模板，记得多学
-- **50 计算X的乘方**
+- **50. Pow(x, n)**
   1.直接调用库函数，O（1），面试肯定不行
   2.暴力法，循环N次，O（N）
   3.分治：折半用分治递归，O（logN），非递归版使用位运算（这个现在不熟悉，得练）
+```python
+#分治
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        if n == 0: return 1
+        if n < 0: return 1 / self.myPow(x, -n)
+        r = self.myPow(x, int(n/2))
+        if n & 1 == 1:
+            return r * r * x
+        else:
+             return r * r
+```
+```python
+#位运算
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        if n == 0: return 1
+        if n < 0: return 1 / self.myPow(x, -n)
+        res, tmp =1, x
+        while n:
+            if n&1:
+                res *= tmp
+            tmp *= tmp
+            n = n >> 1
+        return res
+```
 - **169 找众数**
   1.暴力：双循环，O（N^2）
   2.Map:循环一次dict（x:count_x），求count最大的数，遍历一次即可，O（N）
@@ -294,9 +350,6 @@ class Solution:
 ## 斐波那契
   - O（N）的方法为多次乘以矩阵[[1,1],[1,0]]
 
-## pow（x，y）
-  - 1.分治
-  - 2.二进制做法
 
 ## 摩尔投票法
   - 用一个数存储当前候选人，默认票数为1，若遇到相同的人，票数+1，不同则-1，票数为0的时候换人。
