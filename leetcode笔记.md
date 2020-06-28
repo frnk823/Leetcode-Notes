@@ -171,10 +171,12 @@ class KthLargest:
             heapq.heappop(self.heap)
             heapq.heappush(self.heap, val)
         return self.heap[0]
+```
 - **239 滑动窗口输出最大值**
   1.用优先队列（大根堆）做，每次删除滑出数字，加入新的数字并维护O（logN），查找最大数字O（1）
   2.数组实现dequeue，数组左边保留最大值
-​```python
+
+```python
 class Solution:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
         res = []
