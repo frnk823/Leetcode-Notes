@@ -464,6 +464,30 @@ class Solution:
                          dp\[i]\[j]=min(dp\[i-1]\[j], dp\[i]\[j-1], dp\[i-1]\[j-1]) + 1
    return dp\[m]\[n]
    **注意：如果每种操作的开销不同，就在min里面给每个操作加上额外的开销**
+- **5. 最长回文子串**
+  DP状态表示i到j是否是回文串，只有当回文字串加上前后相同字母的时候才是回文字串，但是状态转移的时候不能直接i，j循环，那样会丢失部分状态，而是按照字串长度l循环，j = i + l，先循环l后循环i，l为0和1的时候单独处理。
+```python
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        if not s or len(s) == 1: return s
+        length = len(s)
+        res = ''
+        dp = [[0 for _ in range(length)] for _ in range(length)]
+        for l in range(length):
+            for i in range(length):
+                j = i + l
+                if j > length-1:
+                    break
+                if l == 0: 
+                    dp[i][j] = 1
+                elif l == 1 and s[i] == s[j]:
+                    dp[i][j] = 1
+                elif dp[i + 1][j - 1] and s[i] == s[j]:
+                    dp[i][j] = 1
+                if dp[i][j] and l+1 > len(res):
+                    res = s[i:j+1]
+        return res
+```
 
 ## 并查集find&union
 - 1.不相交的集合结构
