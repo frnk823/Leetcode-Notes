@@ -150,11 +150,102 @@ class Solution:
 - **232 225 stack和queue互相实现**
   补充
 - **703 返回数据流中的第K大元素**
-  1.用优先队列实现
+  同样是TopK问题，用优先队列（最小堆）实现
+```python
+class KthLargest:
+
+    def __init__(self, k: int, nums: List[int]):
+        self.heap = []
+        self.k = k
+        for val in nums:
+            if len(self.heap) < self.k:
+                heapq.heappush(self.heap, val)
+            elif val > self.heap[0]:
+                heapq.heappop(self.heap)
+                heapq.heappush(self.heap, val)
+
+    def add(self, val: int) -> int:
+        if len(self.heap) < self.k:
+            heapq.heappush(self.heap, val)
+        elif val > self.heap[0]:
+            heapq.heappop(self.heap)
+            heapq.heappush(self.heap, val)
+        return self.heap[0]
 - **239 滑动窗口输出最大值**
   1.用优先队列（大根堆）做，每次删除滑出数字，加入新的数字并维护O（logN），查找最大数字O（1）
   2.数组实现dequeue，数组左边保留最大值
+​```python
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        res = []
+        queue = collections.deque()
+        for i in range(0,len(nums)):
+            queue.append(nums[i])
+            while len(queue) > k:
+                queue.popleft()
+                tmp = 0
+                while tmp <= len(queue)-1:
+                    if queue[tmp] > queue[0]:
+                        queue.popleft()
+                        tmp = 0
+                    tmp += 1
+            while queue[0] < nums[i]:
+                queue.popleft()
+            if i >= k-1:
+                res.append(queue[0])
+        return res
+```
+- **215. 数组中的第K个最大元素**
+  TopK问题用最小堆实现，堆大小为k，每次加入元素如果**比堆顶大**就替换堆顶元素，调整，最终的堆顶就是第k大的
+```python
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        heap = nums[:k]
+        for i in range(int((k-1)/2), -1, -1):
+            self.heapify(heap, k, i)
+        for i in range(k, len(nums)):
+            if heap[0] < nums[i]:
+                heap[0] = nums[i]
+                self.heapify(heap, k, 0)
+        return heap[0]
+        
+    def heapify(self, heap, n, i):
+        if i >= n: return
+        left, right = 2*i+1, 2*i+2
+        min_id = i
+        if left < n and heap[left] < heap[min_id]:
+            min_id = left
+        if right < n and heap[right] < heap[min_id]:
+            min_id = right
+        if min_id != i:
+            heap[min_id], heap[i] = heap[i], heap[min_id]
+            self.heapify(heap, n, min_id)
+```
+- **295. 数据流的中位数**
+  TopK中位数问题用最大堆+最小堆实现，两个堆的堆顶即是中位的两个数（n为奇数的时候那就是其中一个堆顶元素）
+```python
+class MedianFinder:
 
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        # 初始化大顶堆和小顶堆
+        self.max_heap = []
+        self.min_heap = []
+
+    def addNum(self, num: int) -> None:
+        if len(self.max_heap) == len(self.min_heap):# 先加到大顶堆，再把大堆顶元素加到小顶堆
+            heapq.heappush(self.min_heap, -heapq.heappushpop(self.max_heap, -num))
+        else:  # 先加到小顶堆，再把小堆顶元素加到大顶堆
+            heapq.heappush(self.max_heap, -heapq.heappushpop(self.min_heap, num))
+
+    def findMedian(self) -> float:
+        if len(self.min_heap) == len(self.max_heap):
+            return (-self.max_heap[0] + self.min_heap[0]) / 2
+        else:
+            return self.min_heap[0]
+```
 ## map映射/set集合
 - **哈希冲突的方式**：1.拉链法：重复一个位置放链表
 - map是kv对，set只有k（不重复）
