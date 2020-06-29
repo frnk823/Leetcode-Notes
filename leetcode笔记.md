@@ -283,12 +283,38 @@ class Solution:
         if not preorder:
             return
         cur = TreeNode(preorder[0])
+        # 当前的根节点
         index = inorder.index(preorder[0])
+        # 找到中序遍历里的index，index左边为左子树，右边为右子树
         cur.left = self.buildTree(preorder[1:index + 1], inorder[:index])
         cur.right = self.buildTree(preorder[index + 1:], inorder[index + 1:])
         return cur
 ```
-
+- **106. 从中序与后序遍历序列构造二叉树**
+  类似前一种方法
+```python
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
+        if not postorder: return
+        cur = TreeNode(postorder[-1])
+        index = inorder.index(postorder[-1])
+        cur.left = self.buildTree(inorder[:index], postorder[:index])
+        cur.right = self.buildTree(inorder[index+1:], postorder[index:-1])
+        return cur
+```
+- **889. 根据前序和后序遍历构造二叉树**
+  这个比较麻烦，有一些位置需要变
+```python
+class Solution:
+    def constructFromPrePost(self, pre: List[int], post: List[int]) -> TreeNode:
+        if not pre: return None
+        cur = TreeNode(pre[0])
+        if len(pre) == 1: return cur
+        index = post.index(pre[1]) + 1
+        cur.left = self.constructFromPrePost(pre[1:index+1], post[:index])
+        cur.right = self.constructFromPrePost(pre[index+1:], post[index:-1])
+        return cur
+```
 ## 递归/分治
 - 有两个模板，记得多学
 - **50. Pow(x, n)**
