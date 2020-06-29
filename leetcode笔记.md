@@ -276,6 +276,18 @@ class MedianFinder:
   2.recursion递归：分别递归查找左右子树里是否含有p和q，具体看代码，O（N），比法1遍历次数少一些
   3.235里用二叉搜索树，只要判断root.val介于p和q之间就是最早公共祖先，法2的递归变种一下就行，非递归也可以写
 - **树的遍历**：前/中/后序指的是根节点的访问顺序，在二叉搜索树中会得到不一样的顺序结果（比如中序遍历-升序序列）
+- **105. 从前序与中序遍历序列构造二叉树**
+```python
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        if not preorder:
+            return
+        cur = TreeNode(preorder[0])
+        index = inorder.index(preorder[0])
+        cur.left = self.buildTree(preorder[1:index + 1], inorder[:index])
+        cur.right = self.buildTree(preorder[index + 1:], inorder[index + 1:])
+        return cur
+```
 
 ## 递归/分治
 - 有两个模板，记得多学
