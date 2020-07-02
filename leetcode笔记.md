@@ -2,7 +2,7 @@
 
 
 ## 链表
-- **206反转单向链表**
+- **206 反转单向链表**
 ```python
 class Solution:
     def reverseList(self, head: ListNode) -> ListNode:
