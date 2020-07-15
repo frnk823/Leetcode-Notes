@@ -566,3 +566,15 @@ class Solution:
   - 适用于169. 多数元素
 
 ## 马拉车法
+
+## 约瑟夫环
+- **剑指62  圆圈中最后剩下的数字**
+```python
+class Solution:
+    def lastRemaining(self, n: int, m: int) -> int:
+        f = 0
+        for i in range(2, n+1):
+            f = (f + m) % i
+        return f
+```
+
