@@ -569,6 +569,7 @@ class Solution:
 
 ## 约瑟夫环
 - **剑指62  圆圈中最后剩下的数字**
+循环递推，背好递推公式
 ```python
 class Solution:
     def lastRemaining(self, n: int, m: int) -> int:
