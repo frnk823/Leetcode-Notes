@@ -579,3 +579,31 @@ class Solution:
         return f
 ```
 
+## 中文数字转换阿拉伯数字
+少考虑了“三千九”这种特殊写法，可以用sym标志位改，但是会和含“零”情况有点冲突，有空再思考
+```python
+def trans(s):                               
+    if s[0]=='十':                           
+        s = '一' + s                         
+    num = 0                                 
+    temp = 0                                
+    sym = 0   #存放当前最大的权值，如果不是按照从大到小变化就特殊处理                              
+    for i in s:                             
+        if i in number:                     
+            temp = number[i]                
+        elif i in danwei:                   
+            if sym == 0 or weight[i] < sym: 
+                temp *= danwei[i]           
+                num += temp                 
+                temp = 0                    
+                sym = weight[i]             
+            else:                           
+                num *= danwei[i]            
+                sym = 0                     
+        elif i == '零':                      
+            pass                            
+    if temp != 0:                           
+        # num += temp * danwei[sym-1]       
+        num += temp                         
+    return num                              
+```
