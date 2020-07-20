@@ -607,3 +607,5 @@ def trans(s):
         num += temp                         
     return num                              
 ```
+## 字节手撕整理
+https://www.nowcoder.com/discuss/455003?type=post&order=create&pos=&page=1&channel=1011&source_id=search_post 
