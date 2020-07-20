@@ -219,6 +219,7 @@ class Solution:
 class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
         heap = nums[:k]
+        #堆内从尾到头heapify
         for i in range(int((k-1)/2), -1, -1):
             self.heapify(heap, k, i)
         for i in range(k, len(nums)):
@@ -676,6 +677,11 @@ class Solution:
                 return str0[:i]
         return str0
 ```
+- **骨牌填充问题**
+1*n的格子放1*1、1*2、1*3的骨牌
+2*n的格子放1*2的骨牌
+都可以类似爬楼梯递推，第一个骨牌的摆放位置决定了剩下的格子能放的位置，即类似斐波那契数列的递推法
+
 
 ## 字节手撕整理
 https://www.nowcoder.com/discuss/455003?type=post&order=create&pos=&page=1&channel=1011&source_id=search_post 
