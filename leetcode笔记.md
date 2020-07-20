@@ -530,11 +530,33 @@ class Solution:
 ## 并查集find&union
 - 1.不相交的集合结构
   2.两种优化：（1）增加一个rank表示集合的深度（2）路径压缩：把所有集合都改成两层深度，都指向根节点
-- **200 岛屿**求岛屿有几个
+- **200 岛屿 ** 求岛屿有几个
   1.染色flood fill：遍历所有的节点，如果节点==1：count++;将节点自身相邻的所有节点（如果相邻节点也是1，也继续染色相邻节点的相邻节点）改成0，count最后就是总的岛屿总数
   2.并查集：
 - **547 朋友圈**
-  并查集：
+  并查集
+```python
+class Solution:
+    def findCircleNum(self, M: List[List[int]]) -> int:
+        if not M: return 0
+        roots = [i for i in range(len(M))]
+        self.count = len(M)
+
+        def find(a):
+            if roots[a] != a:
+                roots[a] = find(roots[roots[a]])
+            return roots[a]
+        
+        def union(a, b):
+            roots[find(b)] = find(a)
+            self.count -= 1
+
+        for i in range(len(M)):
+            for j in range(i+1, len(M)):
+                if M[i][j] and find(i)!=find(j):
+                    union(i, j)
+        return self.count  
+```
 
 ## LRU缓存
 - 最近使用的排在第一位，置换出最久未使用的
@@ -607,5 +629,35 @@ def trans(s):
         num += temp                         
     return num                              
 ```
+
+## 其他
+- **14. 最长公共前缀**
+python特性，元组拆包实现，比较骚，但是要注意一旦出现非前缀要记得break，否则会把后缀都加到结果里
+```python
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        if not strs: return ''
+        res = ''
+        for i in zip(*strs):
+            tmp = set(i)
+            if len(tmp) == 1:
+                res += i[0]
+            else:
+                break
+        return res
+```
+用最大和最小字符串来比较，简单粗暴，复杂度最低
+```python
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        if not strs: return ""
+        str0 = min(strs)
+        str1 = max(strs)
+        for i in range(len(str0)):
+            if str0[i] != str1[i]:
+                return str0[:i]
+        return str0
+```
+
 ## 字节手撕整理
 https://www.nowcoder.com/discuss/455003?type=post&order=create&pos=&page=1&channel=1011&source_id=search_post 
