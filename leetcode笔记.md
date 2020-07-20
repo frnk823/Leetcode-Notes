@@ -189,7 +189,7 @@ class KthLargest:
 ```
 - **239 滑动窗口输出最大值**
   1.用优先队列（大根堆）做，每次删除滑出数字，加入新的数字并维护O（logN），查找最大数字O（1）
-  2.dequeue实现优先队列，数组左边保留最大值
+  2.dequeue实现优先队列，保持数组左边始终是当前最大值
 ```python
 class Solution:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
@@ -228,6 +228,7 @@ class Solution:
         return heap[0]
         
     def heapify(self, heap, n, i):
+        #n为堆的大小，i为需要调整的节点
         if i >= n: return
         left, right = 2*i+1, 2*i+2
         min_id = i
