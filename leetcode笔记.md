@@ -68,7 +68,7 @@ class Solution:
             return lookup[node]
         return dfs(head)
 ```
-- **148. 排序链表**
+- **148. 排序链表（归并排序）**
   归并排序，找中间节点可以巧用快慢指针的方法做差值
 ```python
 class Solution:
@@ -120,6 +120,7 @@ class Solution:
         while p1.next.next and p2.next.next:
             p1.next, p2.next = p1.next.next, p2.next.next
             p1, p2 = p1.next, p2.next
+        #奇数节点可能会多一个
         if p1.next.next:
             p1.next = p1.next.next
             p1 = p1.next
