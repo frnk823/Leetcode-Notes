@@ -147,7 +147,21 @@ class Solution:
 
 ## stack/queue
 - **20 判断括号是否有效**
-  补充
+```python
+class Solution:
+    def isValid(self, s: str) -> bool:
+        stack = []
+        dic = {')': '(', '}': '{', ']': '['}
+        for i in s:
+            if i not in dic:
+                stack.append(i)
+            else:
+                if not stack: return False
+                tmp = stack.pop()
+                if dic[i] != tmp:
+                    return False
+        return True if len(stack) == 0 else False
+```
 - **232 225 stack和queue互相实现**
   补充
 - **703 返回数据流中的第K大元素**
