@@ -580,6 +580,31 @@ class Solution:
 ## LRU缓存
 - 最近使用的排在第一位，置换出最久未使用的
 - **146 LRU实现**
+```python
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.lru = {}
+        self.queue = []
+        self.lenth = capacity
+
+    def get(self, key: int) -> int:
+        if key in self.lru:
+            self.queue.remove(key)
+            self.queue.append(key)
+            return self.lru[key]
+        else:
+            return -1
+
+    def put(self, key: int, value: int) -> None:
+        self.lru[key] = value
+        if key in self.queue:
+            self.queue.remove(key) 
+        self.queue.append(key)
+        if len(self.lru) > self.lenth:
+            self.lru.pop(self.queue[0])
+            self.queue.remove(self.queue[0])
+```
 
 ## 布隆过滤器 Bloom Filter
 - 用一个很长的二进制向量和映射函数来完成
