@@ -334,6 +334,61 @@ class Solution:
         cur.right = self.constructFromPrePost(pre[index+1:], post[index:-1])
         return cur
 ```
+- **144. 二叉树的前序遍历**
+  单栈迭代方法，但是需要注意顺序：先右后左
+```python
+class Solution:
+    def preorderTraversal(self, root: TreeNode) -> List[int]:
+        if not root: return []
+        res = []
+        stack = [root]
+        while stack:
+            cur = stack.pop()
+            res.append(cur.val)
+            if cur.right:
+                stack.append(cur.right)
+            if cur.left:
+                stack.append(cur.left)
+        return res
+```
+- **145. 二叉树的后序遍历**
+  单栈迭代方法，但是需要注意顺序：先左后右，输出倒序
+```python
+class Solution:
+    def postorderTraversal(self, root: TreeNode) -> List[int]:
+        if not root: return []
+        stack=[root]
+        res=[]
+        while stack:
+            s=stack.pop()
+            res.append(s.val)
+            #和前序遍历是相反的
+            if s.left:
+                stack.append(s.left)
+            if s.right:
+                stack.append(s.right)
+        return res[::-1]
+```
+- **94. 二叉树的中序遍历**
+  单栈迭代方法，模版有些不一样，需要先找到左下角的节点
+```python
+class Solution:
+    def inorderTraversal(self, root: TreeNode) -> List[int]:
+        if not root: return []
+        res = []
+        stack = []
+        cur = root
+        while cur or stack:
+            #一直压栈到左下角节点
+            while cur:
+                stack.append(cur)
+                cur = cur.left
+            cur = stack.pop()
+            res.append(cur.val)
+            cur = cur.right
+        return res
+```
+
 ## 递归/分治
 - 有两个模板，记得多学
 - **50. Pow(x, n)**
