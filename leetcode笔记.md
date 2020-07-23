@@ -388,7 +388,53 @@ class Solution:
             cur = cur.right
         return res
 ```
-
+- ** 113/剑指 Offer 34. 二叉树中和为某一值的路径**
+  dfs
+```python
+class Solution:
+    def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
+        if not root: return []
+        res = []
+        def dfs(node, path, count):
+            if not node:
+                return
+            count += node.val
+            if count == sum and not node.left and not node.right:
+                res.append(path+[node.val])
+                return
+            dfs(node.left, path+[node.val], count)
+            dfs(node.right, path+[node.val], count)
+        dfs(root, [], 0)
+        return res
+```
+- ** 103. 二叉树的锯齿形层次遍历**
+层序遍历+标志正反交错打印level
+```python
+class Solution:
+    def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
+        queue = collections.deque()
+        res = []
+        sym = 0
+        queue.append(root)
+        while queue:
+            level = []
+            lenth = len(queue)
+            for i in range(lenth):
+                cur = queue.popleft()
+                if not cur:
+                    continue
+                level.append(cur.val)
+                queue.append(cur.left)
+                queue.append(cur.right)
+            if level:
+                if sym == 0:
+                    res.append(level)
+                    sym = 1
+                elif sym == 1:
+                    res.append(level[::-1])
+                    sym = 0
+        return res
+```
 ## 递归/分治
 - 有两个模板，记得多学
 - **50. Pow(x, n)**
