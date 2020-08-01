@@ -388,7 +388,7 @@ class Solution:
             cur = cur.right
         return res
 ```
-- ** 113/剑指 Offer 34. 二叉树中和为某一值的路径**
+- **113/剑指 Offer 34. 二叉树中和为某一值的路径**
   dfs
 ```python
 class Solution:
@@ -559,7 +559,7 @@ class Solution:
   3.状态转移方程: opt[n] = best_ of(opt[n-1], opt[n-2], ...
   4.最优子结构
 - 和递推相反，自底向上推，还需要有判断+状态存储（为了避免重复计算）
-- DP vs回溯vs贪心
+- DP vs 回溯 vs 贪心
   回溯（递归）一重复计算
   贪心一永远局部最优
   DP一记录局部最优子结构/多种记录值
