@@ -526,7 +526,7 @@ class Solution:
                 high = mid 
         return nums[low]
 ```
-- **剑指 Offer 11. 旋转数组的最小数字（重点区别！）**
+- **剑指 Offer 11. 旋转数组的最小数字/154. 寻找旋转排序数组中的最小值 II（重点区别！）**
 注意！！！因为数字可以重复，所以遇到=的时候就high- - 
 ```python
 class Solution:
