@@ -526,6 +526,21 @@ class Solution:
                 high = mid 
         return nums[low]
 ```
+- **剑指 Offer 11. 旋转数组的最小数字（重点区别！）**
+注意！！！因为数字可以重复，所以遇到=的时候就high- - 
+```python
+class Solution:
+    def minArray(self, numbers: List[int]) -> int:
+        low, high = 0, len(numbers)-1
+        while low < high:
+            mid = (low + high) >> 1
+            if numbers[mid] > numbers[high]:
+                low = mid + 1
+            elif numbers[mid] < numbers[high]:
+                high = mid 
+            else: high -= 1
+        return numbers[low]
+```
 
 ## Trie树-字典树
 - 树形结构，哈希树的变种。应用于统计和排序大量字符串，常用于搜索引擎词频统计，可以减少字符串的比较次数，查找效率比哈希表高。
