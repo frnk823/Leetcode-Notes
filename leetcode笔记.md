@@ -498,7 +498,7 @@ class Solution:
   2.递归搜索：每一个位置都2种情况不断分叉，再遍历判断有效的情况，O（2^2N）
   3.剪枝：1.不合法的情况的分支不再递归。2.左右括号的总数不能超过N，超出的情况剪枝。O（2^N）
 - **剑指 Offer 12. 矩阵中的路径/79. 单词搜索**
-这个写的不好，后续优化一下
+这个写的不好，后续优化一下，改成`nonlocal res`
 ```python
 class Solution:
     def exist(self, board: List[List[str]], word: str) -> bool:
@@ -526,6 +526,33 @@ class Solution:
                 dfs(i, j, word)
         return self.res
 ```
+- **剑指 Offer 13. 机器人的运动范围**
+```python
+class Solution:
+    def movingCount(self, m: int, n: int, k: int) -> int:
+        dx = [1, 0]
+        dy = [0, 1]
+        ans = [[0 for _ in range(n)] for _ in range(m)]
+        res = 0
+        def cal(n):
+            s = 0
+            while n:
+                s += n%10
+                n //= 10
+            return s
+
+        def dfs(i, j):
+            nonlocal res, ans
+            ans[i][j] = 1
+            res += 1
+            for d in range(2):
+                x, y = i+dx[d], j+dy[d]
+                if -1<x<m and -1<y<n and cal(x)+cal(y)<=k and ans[x][y] == 0:
+                    dfs(x, y)
+        dfs(0, 0)
+        return res
+```
+
 
 ## 剪枝
 - **51 52 N皇后**
@@ -689,6 +716,10 @@ class Solution:
    状态方程：`dp[i,j]=min(dp[i+,j],dp[i+1,j+1])+val[i,j]`（i从n-2开始倒循环）
    O(M*N)
   **注意：二维方程可以压缩成一维方程——状态压缩**
+- **骨牌填充问题**
+1*n的格子放1*1、1*2、1*3的骨牌
+2*n的格子放1*2的骨牌
+都可以类似爬楼梯递推，第一个骨牌的摆放位置决定了剩下的格子能放的位置，即类似斐波那契数列的递推法
 - **152 乘积最大子序列**
   1.暴力：递归循环
   2.DP：
@@ -899,6 +930,49 @@ def trans(s):
     return num                              
 ```
 
+## 数学推导
+- **剑指 Offer 14- I. 剪绳子/343. 整数拆分**
+1.数学归纳法推导出等分成3的倍数，乘积最大
+2.还可以用贪心法解，将n为2-6的情况枚举，超过这个长度的按照贪心切分后进行计算（常规计算）
+```python
+class Solution:
+    def cuttingRope(self, n: int) -> int:
+        res = 0
+        if n == 2: return 1
+        if n == 3: return 2
+        a, b = n//3, n%3
+        if b == 0:
+            return int(math.pow(3, a))
+        if b == 1:
+            return int(math.pow(3, a-1)*4)
+        if b == 2:
+            return int(math.pow(3, a)*2)
+```
+- **剑指 Offer 14- II. 剪绳子 II**
+按照旧情况会出现长度超标现象，需要不断循环取余，pow操作也可以转换为二分法来加速
+```python
+class Solution:
+    def cuttingRope(self, n: int) -> int:
+        res = 0
+        if n == 2: return 1
+        if n == 3: return 2
+        def cycle(x, a):
+            s = 1
+            while a:
+                s *= x
+                s %= 1000000007
+                a -= 1 
+            return s%1000000007
+
+        a, b = n//3, n%3
+        if b == 0:
+            return cycle(3, a)
+        if b == 1:
+            return cycle(3, a-1)*4%1000000007
+        if b == 2:
+            return cycle(3, a)*2%1000000007
+```
+
 ## 其他
 - **14. 最长公共前缀**
 python特性，元组拆包实现，比较骚，但是要注意一旦出现非前缀要记得break，否则会把后缀都加到结果里
@@ -927,10 +1001,7 @@ class Solution:
                 return str0[:i]
         return str0
 ```
-- **骨牌填充问题**
-1*n的格子放1*1、1*2、1*3的骨牌
-2*n的格子放1*2的骨牌
-都可以类似爬楼梯递推，第一个骨牌的摆放位置决定了剩下的格子能放的位置，即类似斐波那契数列的递推法
+
 
 
 ## 字节手撕整理
