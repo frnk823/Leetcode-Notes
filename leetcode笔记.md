@@ -144,6 +144,19 @@ class Solution:
         slow.next = slow.next.next
         return dummy.next
 ```
+- **剑指 Offer 18. 删除链表的节点**
+  头节点可能被删，记得dummy开头
+```python
+class Solution:
+    def deleteNode(self, head: ListNode, val: int) -> ListNode:
+        dummy = ListNode(0)
+        dummy.next = head
+        pre, cur = dummy, head
+        while cur.val != val:
+            pre, cur = pre.next, cur.next
+        pre.next = cur.next
+        return dummy.next
+```
 
 ## stack/queue
 - **20 判断括号是否有效**
@@ -165,7 +178,26 @@ class Solution:
 - **232 225 stack和queue互相实现**
   补充
 - **剑指 Offer 09. 用两个栈实现队列**
-  补充
+```python
+class CQueue:
+
+    def __init__(self):
+        self.stack1 = []
+        self.stack2 = []
+
+
+    def appendTail(self, value: int) -> None:
+        self.stack1.append(value)
+        self.stack2 = self.stack1[::-1]
+
+
+    def deleteHead(self) -> int:
+        if not self.stack2:
+            return -1
+        tmp = self.stack2.pop()
+        self.stack1 = self.stack2[::-1]
+        return tmp
+```
 - **703 返回数据流中的第K大元素**
   同样是TopK问题，用优先队列（最小堆）实现
 ```python
@@ -285,6 +317,29 @@ class MedianFinder:
   1.暴力法：O（N^3）
   2.Set：循环x，y，查找-(x,y)是否在set集合里（但是得把x,y自身去掉），O（N^2）
   3.sort.find 先整个数组排序，循环x，剩下的左右两边双指针，和大于0：z左移，和小于0:y右移，O（N^2），但比法2省空间（从N到1）
+- **128. 最长连续序列**
+和字节第一次面试题差不多，但是**不剪枝会超时**，同时set直接手动加入，不要set()转换，否则时间复杂度也会变慢
+```python
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        if not nums: return 0
+        dic = set()
+        for each in nums:
+            if each not in dic:
+                dic.add(each)
+        res = 1    
+        for each in dic:
+            tmp = 0
+            t = each
+            if t-1 not in dic:#剪枝！
+                while t in dic:
+                    if t in dic:
+                        tmp += 1
+                    t+=1
+                res = max(res, tmp)
+        return res      
+```
+
 
 ## 树（都得自定义了）
 - **二叉搜索树**：左子树比根小，右子树比根大，左右子树都是二叉搜索树
@@ -439,24 +494,24 @@ class Solution:
 ```
 ## 递归/分治
 - 有两个模板，记得多学
-- **50. Pow(x, n)**
+- **50. Pow(x, n)/剑指 Offer 16. 数值的整数次方**
   1.直接调用库函数，O（1），面试肯定不行
   2.暴力法，循环N次，O（N）
-  3.分治：折半用分治递归，O（logN），非递归版使用位运算（这个现在不熟悉，得练）
+  3.分治：折半用分治递归，O（logN），非递归版使用位运算
 ```python
-#分治
+#分治法，注意区分奇偶情况
 class Solution:
     def myPow(self, x: float, n: int) -> float:
         if n == 0: return 1
         if n < 0: return 1 / self.myPow(x, -n)
-        r = self.myPow(x, int(n/2))
+        r = self.myPow(x, n//2)
         if n & 1 == 1:
             return r * r * x
         else:
              return r * r
 ```
 ```python
-#位运算
+#位运算    背诵！！！！！！！！！！！！！！！！
 class Solution:
     def myPow(self, x: float, n: int) -> float:
         if n == 0: return 1
@@ -606,7 +661,7 @@ class Solution:
 - 根节点不包含字符，其他节点只包含一个字符，且每个节点包含的字符都不相同
 - **208 Trie树的实现**
   1.没啥技巧，就是多背模板
-- **（79）212 单词搜索**
+- **（79升级版）212 单词搜索**
   1.DFS
   2.Trie树：先用候选词建立Trie树，再去枚举board是否有满足Trie树的情况
 ```python
@@ -670,14 +725,20 @@ class Solution:
   `X = X & (X-1)`，清零最低位的1
   `X & -X`，得到最低位的1
   `X ^ X = 0`，`X ^ 0 = X`
-- **191 位1的个数**
+
+- **191 位1的个数/剑指 Offer 15. 二进制中1的个数**
   1.mod2，`if %2==1:count++，x>>1`，O（如数的长度，整数32位）
-  2.`X = X & (X-1)`:
-       `while（x！=0）:
-           count++
-           X = X & (X-1)`
-  `O（位1的个数）`
-  
+  2.利用`X & (X-1)`消除最低位的1，`O（位1的个数）`
+```python
+class Solution:
+    def hammingWeight(self, n: int) -> int:
+        res = 0
+        while n:
+            n = n & (n-1)
+            res += 1
+        return res
+```
+
 - **231 二的次方数**
   1.mod2
   2.开log2看是不是整数
@@ -879,6 +940,44 @@ class LRUCache:
 - 3.Coding (写代码)
 - 4.Test Cases (测试用例)
 
+## 字符串处理
+- **剑指 Offer 17.打印从1到最大的n位数**
+法1:最简单的就是用pow进行递增打印，pow函数还可以用分治法进行快速实现
+```python
+class Solution:
+    def printNumbers(self, n: int) -> List[int]:
+        res = []
+        for i in range(1, self.myPow(10,n)):
+            res.append(i)
+        return res
+    #快速pow要背下来！！！
+    def myPow(self, x: float, n: int) -> float:
+        if n == 0: return 1
+        if n < 0: return 1 / self.myPow(x, -n)
+        res, tmp =1, x
+        while n:
+            if n&1:
+                res *= tmp
+            tmp *= tmp
+            n = n >> 1
+        return res
+```
+法2:遇到大数越界的问题（python其实还不会），需要转换成字符串来处理
+```python
+def printNumbers(self, n: int) :
+        res=[]
+        temp=['0']*n
+        def helper(index):
+            if index==n:
+                res.append(int(''.join(temp)))
+                return
+            for i in range(10):
+                temp[index]=chr(ord("0")+i)
+                helper(index+1)
+        helper(0)
+        return res[1:]
+```
+
 ## 斐波那契
   - O（N）的方法为多次乘以矩阵[[1,1],[1,0]]
 
@@ -949,7 +1048,7 @@ class Solution:
             return int(math.pow(3, a)*2)
 ```
 - **剑指 Offer 14- II. 剪绳子 II**
-按照旧情况会出现长度超标现象，需要不断循环取余，pow操作也可以转换为二分法来加速
+按照旧情况会出现长度超标现象，需要不断循环取余，pow操作也可以转换为分治法来加速
 ```python
 class Solution:
     def cuttingRope(self, n: int) -> int:
@@ -975,7 +1074,7 @@ class Solution:
 
 ## 其他
 - **14. 最长公共前缀**
-python特性，元组拆包实现，比较骚，但是要注意一旦出现非前缀要记得break，否则会把后缀都加到结果里
+法1:python特性，元组拆包实现，比较骚，但是要注意一旦出现非前缀要记得break，否则会把后缀都加到结果里
 ```python
 class Solution:
     def longestCommonPrefix(self, strs: List[str]) -> str:
@@ -989,7 +1088,7 @@ class Solution:
                 break
         return res
 ```
-用最大和最小字符串来比较，简单粗暴，复杂度最低
+法2:用最大和最小字符串来比较，简单粗暴，复杂度最低
 ```python
 class Solution:
     def longestCommonPrefix(self, strs: List[str]) -> str:
