@@ -497,6 +497,35 @@ class Solution:
   1.数学归纳法，很麻烦
   2.递归搜索：每一个位置都2种情况不断分叉，再遍历判断有效的情况，O（2^2N）
   3.剪枝：1.不合法的情况的分支不再递归。2.左右括号的总数不能超过N，超出的情况剪枝。O（2^N）
+- **剑指 Offer 12. 矩阵中的路径/79. 单词搜索**
+这个写的不好，后续优化一下
+```python
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        if not board: return False
+        if not word: return True
+        dx = [1, -1, 0, 0]
+        dy = [0, 0, 1, -1]
+        hight = len(board)
+        lenth = len(board[0])
+        self.res = False
+        def dfs(i, j, des):
+            if board[i][j] == des[0] and self.res == False:
+                if len(des) == 1:
+                    self.res = True
+                    return
+                tmp = board[i][j]
+                board[i][j] = '@'
+                for k in range(4):
+                    x, y = i+dx[k], j+dy[k]
+                    if -1<x<hight and -1<y<lenth and board[x][y]!='@':
+                        dfs(x, y, des[1:])
+                board[i][j] = tmp
+        for i in range(hight):
+            for j in range(lenth):
+                dfs(i, j, word)
+        return self.res
+```
 
 ## 剪枝
 - **51 52 N皇后**
@@ -526,18 +555,19 @@ class Solution:
                 high = mid 
         return nums[low]
 ```
-- **剑指 Offer 11. 旋转数组的最小数字/154. 寻找旋转排序数组中的最小值 II（⚠️重点注意！）**
-注意！！！因为数字可以重复，所以遇到=的时候就high- - 
+- **剑指 Offer 11. 旋转数组的最小数字/154. 寻找旋转排序数组中的最小值 II（⚠️重点注意else！）**
+注意！！！因为数字可以重复，所以遇到相等的情况不能直接变界，执行high- - 
 ```python
 class Solution:
     def minArray(self, numbers: List[int]) -> int:
-        low, high = 0, len(numbers)-1
+        low, high = 0, len(numbers)-l
         while low < high:
             mid = (low + high) >> 1
             if numbers[mid] > numbers[high]:
                 low = mid + 1
             elif numbers[mid] < numbers[high]:
                 high = mid 
+            #特别注意这个情况
             else: high -= 1
         return numbers[low]
 ```
@@ -552,6 +582,51 @@ class Solution:
 - **（79）212 单词搜索**
   1.DFS
   2.Trie树：先用候选词建立Trie树，再去枚举board是否有满足Trie树的情况
+```python
+class Solution:
+    dx = [1, -1, 0, 0]
+    dy = [0, 0, 1, -1]
+
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        if not words or not board or board==[] : return []
+        self.res = set()
+        #Trie tree
+        self.root = {}
+        self.is_end = '#'
+        #将board存进Trie树中
+        for word in words:
+            cur = self.root
+            for each in word:
+                if each not in cur:
+                    cur[each] = {}
+                cur = cur[each]
+            cur[self.is_end] = self.is_end    
+        self.width = len(board)
+        self.lenth = len(board[0])
+        #开始递归
+        for i in range(self.width):
+            for j in range(self.lenth):
+                if board[i][j] in self.root:
+                    self.dfs(board, i, j, '', self.root)
+        
+        return list(self.res)
+    #dfs：使用过的位置需要置空，递归完需要还原
+    def dfs(self, board, i, j, cur_word, cur_node):
+        cur_word += board[i][j]
+        cur_node = cur_node[board[i][j]]
+
+        if self.is_end in cur_node:
+            self.res.add(cur_word)
+        
+        temp = board[i][j]
+        board[i][j] = '@'
+
+        for k in range(4):
+            x, y=i+self.dx[k], j+self.dy[k]
+            if -1<x<self.width and -1<y<self.lenth and board[x][y]!='@' and board[x][y] in cur_node:
+                    self.dfs(board, x, y, cur_word, cur_node)
+        board[i][j] = temp
+```
 
 ## 位运算
 - 符号 | 描述 |  运算规则  
