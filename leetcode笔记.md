@@ -1029,6 +1029,33 @@ def trans(s):
     return num                              
 ```
 
+## 正则匹配
+- **剑指 Offer 19. 正则表达式匹配**
+⚠️前面需要加一个`#`，原因未知，盲猜是因为用到了`dp[i-1][j-1]`
+```python
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        s, p = '#'+s, '#'+p
+        m, n = len(s), len(p)
+        dp = [[False]*n for _ in range(m)]
+        dp[0][0] = True
+        
+        for i in range(m):
+            for j in range(1, n):
+                #s为空的时候，只能匹配'X*'的情况，需要两个and
+                if i == 0:
+                    dp[i][j] = j > 1 and p[j] == '*' and dp[i][j-2]
+                #当前位相同或者当前位是'.'（匹配任何非/n字符）
+                elif p[j] in [s[i], '.']:
+                    dp[i][j] = dp[i-1][j-1]
+                #当前位为'*'时有两种情况，'X*'或者'.*'
+                elif p[j] == '*':
+                    dp[i][j] = j > 1 and dp[i][j-2] or p[j-1] in [s[i], '.'] and dp[i-1][j]
+                else:
+                    dp[i][j] = False
+        return dp[-1][-1]
+```
+
 ## 数学推导
 - **剑指 Offer 14- I. 剪绳子/343. 整数拆分**
 1.数学归纳法推导出等分成3的倍数，乘积最大
