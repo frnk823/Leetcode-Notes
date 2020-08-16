@@ -993,6 +993,22 @@ class Solution:
         return nums
 ```
 
+- **41. 缺失的第一个正数**
+时间复杂度`O(N)`，空间复杂度`O(1)`
+```python
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        if not nums: return 1
+        n = len(nums)
+        for i in range(n):
+            while 0 < nums[i] < n and nums[nums[i]-1] != nums[i]:
+                nums[i], nums[nums[i]-1] = nums[nums[i]-1], nums[i]
+        for i in range(n):
+            if nums[i] != i+1:
+                return i+1
+        return n+1
+```
+
 
 ## 斐波那契
   - O（N）的方法为多次乘以矩阵[[1,1],[1,0]]
