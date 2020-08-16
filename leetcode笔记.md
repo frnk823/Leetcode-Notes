@@ -978,6 +978,22 @@ def printNumbers(self, n: int) :
         return res[1:]
 ```
 
+- **剑指 Offer 21. 调整数组顺序使奇数位于偶数前面**
+类似快排的方法来一个一个交换
+```python
+class Solution:
+    def exchange(self, nums: List[int]) -> List[int]:
+        l, r = 0, len(nums)-1
+        while l < r:
+            while l < r and nums[r]&1 == 0:
+                r -= 1
+            while l < r and nums[l]&1 == 1:
+                l += 1
+            nums[l], nums[r] = nums[r], nums[l]
+        return nums
+```
+
+
 ## 斐波那契
   - O（N）的方法为多次乘以矩阵[[1,1],[1,0]]
 
@@ -1031,7 +1047,7 @@ def trans(s):
 
 ## 正则匹配
 - **剑指 Offer 19. 正则表达式匹配**
-⚠️前面需要加一个`#`，原因未知，盲猜是因为用到了`dp[i-1][j-1]`
+⚠️前面需要加一个`#`，原因未知，盲猜是因为用到了`dp[i-1][j-1]`，但是应该可以改成不用`#`的。
 ```python
 class Solution:
     def isMatch(self, s: str, p: str) -> bool:
@@ -1054,6 +1070,16 @@ class Solution:
                 else:
                     dp[i][j] = False
         return dp[-1][-1]
+```
+
+- **剑指 Offer 20. 表示数值的字符串**
+DFA/regex来解
+```python
+import re
+class Solution:
+    def isNumber(self, s: str) -> bool:
+        res = re.match(r'^[+-]?(\d+\.?\d*|\.\d+)([Ee][+-]?\d+)?$',s.strip())
+        return True if res else False
 ```
 
 ## 数学推导
