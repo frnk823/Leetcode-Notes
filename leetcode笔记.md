@@ -111,7 +111,7 @@ class Solution:
         return p1
 ```
 - **328. 奇偶链表**
-  双指针递推
+  双指针递推，奇偶先分别连起来，然后保存一下偶数的开头，最后把两条链表串起来，**注意奇数节点可能会多一个**
 ```python
 class Solution:
     def oddEvenList(self, head: ListNode) -> ListNode:
@@ -464,7 +464,7 @@ class Solution:
         dfs(root, [], 0)
         return res
 ```
-- ** 103. 二叉树的锯齿形层次遍历**
+- **103. 二叉树的锯齿形层次遍历**
 层序遍历+标志正反交错打印level
 ```python
 class Solution:
@@ -491,6 +491,24 @@ class Solution:
                     res.append(level[::-1])
                     sym = 0
         return res
+```
+- **剑指 Offer 54. 二叉搜索树的第k大节点**
+中序遍历BST便有序，但从大到小逆序就可以，递归解决
+```python
+class Solution:
+    def kthLargest(self, root: TreeNode, k: int) -> int:
+        self.k, self.res = k, 0
+        #inorder
+        def dfs(root):
+            if not root: return
+            dfs(root.right)
+            self.k -= 1
+            if self.k == 0:
+                self.res = root.val
+                return
+            dfs(root.left)
+        dfs(root)
+        return self.res
 ```
 ## 递归/分治
 - 有两个模板，记得多学
