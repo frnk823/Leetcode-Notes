@@ -783,18 +783,40 @@ class Solution:
 - **70 爬楼梯**
   1.递归： climbStairs(self,int-1)+ climbStairs(self,int-2)，可用一个数组存值，避免重复计算
   2.DP：`dp[i] = dp[i - 1] + dp[i - 2]`，`dp[n]`为到第n层的总走法
-- **120 Triangle**
+- **120. 三角形最小路径和**
   1.递归：` Triangle(i,j){
     Triangle(i+1,j)
     Triangle(i+1,j+1)
   }`,`O(2^N)`
   2.贪心不可行
   3.DP：
+   dp方法需要自底向上推导，可以将二维方程压缩成一维
    状态定义：`dp[i,j]=点(i,j)到结束的最小距离`
    初始方程：最后一行`dp[i,j]=val[i,j]`
-   状态方程：`dp[i,j]=min(dp[i+,j],dp[i+1,j+1])+val[i,j]`（i从n-2开始倒循环）
+   状态方程：`dp[i,j]=min(dp[i+1,j],dp[i+1,j+1])+val[i,j]`（i从n-2开始倒循环）
    O(M*N)
   **注意：二维方程可以压缩成一维方程——状态压缩**
+```python
+class Solution:
+    #没有压缩的二维dp
+    def minimumTotal(self, triangle: List[List[int]]) -> int:
+        if not triangle: return 0
+        high = len(triangle)
+        dp = triangle.copy()
+        for i in range(high-2, -1 , -1):
+            for j in range(len(triangle[i])):
+                dp[i][j] = triangle[i][j] + min(dp[i+1][j],dp[i+1][j+1])
+        return dp[0][0]
+    # 压缩后的一维dp
+    def minimumTotal(self, triangle: List[List[int]]) -> int:
+        if not triangle: return 0
+        high = len(triangle)
+        dp = triangle[-1]
+        for i in range(high-2, -1 , -1):
+            for j in range(len(triangle[i])):
+                dp[j] = triangle[i][j] + min(dp[j],dp[j+1])
+        return dp[0]
+```
 - **骨牌填充问题**
 1*n的格子放1*1、1*2、1*3的骨牌
 2*n的格子放1*2的骨牌
