@@ -1181,7 +1181,39 @@ class Solution:
             return cycle(3, a)*2%1000000007
 ```
 
+**470. 用 Rand7() 实现 Rand10()**
+牢记`(rand7()-1)*7+rand7()`这个规律
+
+```python
+class Solution:
+    def rand10(self):
+        """
+        :rtype: int
+        """
+        res = (rand7()-1)*7+rand7()
+        while res > 10:
+            res = (rand7()-1)*7+rand7()
+        return res
+```
+
+还可以充分利用有效区间进行取模优化
+
+```python
+class Solution:
+    def rand10(self):
+        """
+        :rtype: int
+        """
+        res = (rand7()-1)*7+rand7()
+        while res > 40:
+            res = (rand7()-1)*7+rand7()
+        return 1+res%10
+```
+
+
+
 ## 其他
+
 - **14. 最长公共前缀**
 法1:python特性，元组拆包实现，比较骚，但是要注意一旦出现非前缀要记得break，否则会把后缀都加到结果里
 ```python
