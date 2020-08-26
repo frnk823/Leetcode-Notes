@@ -23,6 +23,7 @@ Java/JVM的内存空间主要有5个部分，线程私有的：Java虚拟机栈�
   ​        运行时常量池属于方法区的一部分（逻辑上，1.7以前放在永久带区域，1.8后物理存放在堆中，逻辑上在方法区），常量池中存放2类常量：字面量和符号引用。字面量比较接近java语言层面的常量概念，如文本字符串，被声明为final的常量值等。而符号引用则属于编译原理方面的概念，包括3类常量：类和接口的全限定名、字段的名称和描述符，方法的名称和描述符。
 
 ## Java多线程实现（四种方法）
+https://zhuanlan.zhihu.com/p/47401636
 -**1.继承Thread类，重写run方法（其实Thread类本身也实现了Runnable接口）**
 每次创建一个新的线程，都要新建一个Thread子类的对象
 启动线程，new Thread子类（）.start（）
@@ -32,7 +33,21 @@ Java/JVM的内存空间主要有5个部分，线程私有的：Java虚拟机栈�
 启动线程，new Thread（Runnable接口实现类的对象）.start()
 创建线程调用的是Thread类Runable类型参数的构造器
 -**3.实现Callable接口，重写call方法（有返回值）**
-
+自定义类实现Callable接口时，必须指定泛型，该泛型即返回值的类型
+每次创建一个新的线程，都要创建一个新的Callable接口的实现类
+（1）创建一个Callable接口的实现类的对象
+（2）创建一个FutureTask对象，传入Callable类型的参数
+```Java
+public FutureTask(Callable<V> callable){……}
+```
+3）调用Thread类重载的参数为Runnable的构造器创建Thread对象
+将FutureTask作为参数传递
+```Java
+public class FutureTask<V> implements RunnableFuture<V>
+public interface RunnableFuture<V> extends Runnable, Future<V>
+```
+如何获取返回值？
+调用FutureTask类的get()方法
 -**4.使用线程池（有返回值）**
 
 
