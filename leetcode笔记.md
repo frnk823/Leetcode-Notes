@@ -1034,13 +1034,14 @@ class Solution:
 ```
 
 - **41. 缺失的第一个正数**
-时间复杂度`O(N)`，空间复杂度`O(1)`
+原地置换，将数字置换回正确的位置上，再遍历找出缺失的数字，时间复杂度`O(N)`，空间复杂度`O(1)`
 ```python
 class Solution:
     def firstMissingPositive(self, nums: List[int]) -> int:
         if not nums: return 1
         n = len(nums)
         for i in range(n):
+            #第二个判断是为了避免死循环
             while 0 < nums[i] < n and nums[nums[i]-1] != nums[i]:
                 nums[i], nums[nums[i]-1] = nums[nums[i]-1], nums[i]
         for i in range(n):
