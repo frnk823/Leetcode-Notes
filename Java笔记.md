@@ -24,9 +24,17 @@ Java/JVM的内存空间主要有5个部分，线程私有的：Java虚拟机栈�
 
 ## Java多线程实现（四种方法）
 -**1.继承Thread类，重写run方法（其实Thread类本身也实现了Runnable接口）**
+每次创建一个新的线程，都要新建一个Thread子类的对象
+启动线程，new Thread子类（）.start（）
+创建线程实际调用的是父类Thread空参的构造器
 -**2.实现Runnable接口，重写run方法**
+不论创建多少个线程，只需要创建一个Runnable接口实现类的对象
+启动线程，new Thread（Runnable接口实现类的对象）.start()
+创建线程调用的是Thread类Runable类型参数的构造器
 -**3.实现Callable接口，重写call方法（有返回值）**
+
 -**4.使用线程池（有返回值）**
+
 
 ## 字符串
 -**字符串常量池**
