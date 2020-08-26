@@ -1057,6 +1057,17 @@ class Solution:
 ## 摩尔投票法
   - 用一个数存储当前候选人，默认票数为1，若遇到相同的人，票数+1，不同则-1，票数为0的时候换人。
   - 适用于169. 多数元素
+```python
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        if not nums: return
+        candidate, votes = 0, 0
+        for i in nums:
+            if votes == 0:
+                candidate = i
+            votes += 1 if i == candidate else -1
+        return candidate
+```
 
 ## 马拉车法
 
