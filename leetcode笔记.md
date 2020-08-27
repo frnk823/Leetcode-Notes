@@ -671,6 +671,35 @@ class Solution:
             else: high -= 1
         return numbers[low]
 ```
+- **34. 在排序数组中查找元素的第一个和最后一个位置**
+二分查找，找边界的时候==情况不返回，而是继续缩小边界，注意右边界查找的时候有一个+1
+```python
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if not nums: return [-1, -1]
+        # 寻找左边界
+        left, right = 0, len(nums) - 1
+        while left < right:
+            mid = left + right >> 1
+            if nums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid
+        if nums[left] != target:
+            return [-1, -1]
+        res = [left]
+
+        # 寻找右边界，注意此时的 left 是左边界的索引值
+        right = len(nums) - 1
+        while left < right:
+            mid = left + right + 1 >> 1
+            if nums[mid] > target:
+                right = mid - 1
+            else:
+                left = mid
+        res.append(right)
+        return res
+```
 
 ## Trie树-字典树
 - 树形结构，哈希树的变种。应用于统计和排序大量字符串，常用于搜索引擎词频统计，可以减少字符串的比较次数，查找效率比哈希表高。
