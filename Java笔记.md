@@ -60,6 +60,7 @@ public interface RunnableFuture<V> extends Runnable, Future<V>
 ## new一个对象，jvm中的过程
 
 ## 深拷贝和浅拷贝
+https://www.nowcoder.com/discuss/491184?type=1&channel=666&source_id=discuss_terminal_discuss_hot
 直接赋值引用不算拷贝
 浅拷贝可以复制非引用型参数，但是引用型参数还是没有复制一份新的（继承Cloneable接口并重写clone方法）
 深拷贝连引用型参数也完全拷贝一份，需要引用型参数本身的类也继承Cloneable接口并重写clone方法（依然继承Cloneable接口并重写clone方法 or clone方法里使用序列化和反序列化进行深拷贝但是要求其引用的对象本身支持序列化即继承Serializable接口）
