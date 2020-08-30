@@ -11,6 +11,28 @@ class Solution:
             cur.next,pre, cur = pre, cur, cur.next
         return pre
 ```
+- **92. 反转链表 II**
+逻辑推理，需要两个标志位来记录两个断点，有点儿绕
+```python
+class Solution:
+    def reverseBetween(self, head: ListNode, m: int, n: int) -> ListNode:
+        start = ListNode(0)
+        start.next = head
+        pre, cur = start, head
+        #找到反转起始点并记录
+        while m-1 > 0:
+            m, n = m-1, n-1
+            pre, cur = cur, cur.next
+        dummy = pre 
+        #反转
+        while n > 0:
+            cur.next, pre, cur = pre, cur, cur.next
+            n -= 1
+        #头尾重新接
+        dummy.next.next = cur
+        dummy.next = pre
+        return start.next
+```
 - **141 环形链表**
 ```python
 class Solution:
