@@ -12,7 +12,7 @@ class Solution:
         return pre
 ```
 - **92. 反转链表 II**
-逻辑推理，需要两个标志位来记录两个断点，有点儿绕
+反转m到n位置的链表，逻辑推理，需要两个标志位来记录两个断点，有点儿绕
 ```python
 class Solution:
     def reverseBetween(self, head: ListNode, m: int, n: int) -> ListNode:
@@ -56,6 +56,11 @@ class Solution:
             pre.next, a.next, b.next = b, b.next, a
             pre = a
         return dummy.next 
+```
+- **25. K 个一组翻转链表**
+比较麻烦，用递归
+```python
+
 ```
 - **234 回文链表**
 ```python
