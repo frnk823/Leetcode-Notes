@@ -57,10 +57,33 @@ class Solution:
             pre = a
         return dummy.next 
 ```
-- **25. K 个一组翻转链表**
-比较麻烦，用递归
+- **25. K 个一组翻转链表（⚠️注意背）**
+比较麻烦，用递归+迭代
 ```python
-
+class Solution:
+    def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
+        if not head or not head.next:
+            return head
+        tail = head
+        for i in range(k):
+            # 剩余数量小于k的话，则不需要反转
+            if not tail:
+                return head
+            tail = tail.next
+        # 反转前k个元素，将返回的头结点记为newHead
+        newHead = self.reverse(head, tail)
+        # 将head.next 赋为 递归上一步反转得到的newHead
+        head.next = self.reverseKGroup(tail, k)
+        return newHead
+    # 翻转为左闭又开区间，所以本轮操作的尾结点其实就是下一轮操作的头结点
+    def reverse(self, head, tail):
+        pre = None
+        while head != tail:
+            tmp = head.next
+            head.next = pre
+            pre = head
+            head = tmp
+        return pre
 ```
 - **234 回文链表**
 ```python
@@ -877,6 +900,28 @@ class Solution:
 1*n的格子放1*1、1*2、1*3的骨牌
 2*n的格子放1*2的骨牌
 都可以类似爬楼梯递推，第一个骨牌的摆放位置决定了剩下的格子能放的位置，即类似斐波那契数列的递推法
+- **53. 最大子序和**
+```python #dp
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        dp = nums.copy()
+        dp[0] = nums[0]
+        for i in range(1, len(nums)):
+            dp[i] = max(nums[i], dp[i-1]+nums[i])
+        return max(dp)
+```
+```python #正数增益（推荐）
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        res, sum = nums[0], 0
+        for num in nums:
+            if sum > 0:
+                sum += num
+            else:
+                sum = num
+            res = max(res, sum)
+        return res
+```
 - **152 乘积最大子序列**
   1.暴力：递归循环
   2.DP：
