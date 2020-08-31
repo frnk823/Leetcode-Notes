@@ -44,6 +44,24 @@ class Solution:
                 return True
         return False
 ```
+- **21. 合并两个有序链表**
+```python
+class Solution:
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        dummy = ListNode(0)
+        cur = dummy
+        while l1 and l2:
+            if l1.val < l2.val:
+                cur.next = l1
+                cur = cur.next
+                l1 = l1.next
+            else:
+                cur.next = l2
+                cur = cur.next
+                l2 = l2.next
+        cur.next = l1 if l1 else l2
+        return dummy.next
+```
 - **24. 两两交换链表中的节点 （背）**
 ```python
 class Solution:
@@ -873,6 +891,21 @@ class Solution:
             b = c
         return b
 ```
+- **62. 不同路径**
+dp倒推，每个状态等于右边和下边的路径数和，base case为最后一行最后一列全为1
+```python
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        dp = [[0 for i in range(n)] for i in range(m)]
+        for i in range(m):
+            dp[i][n-1] = 1
+        for i in range(n):
+            dp[m-1][i] = 1
+        for i in range(m-2, -1, -1):
+            for j in range(n-2, -1, -1):
+                dp[i][j] = dp[i+1][j] + dp[i][j+1]
+        return dp[0][0]
+```
 - **120. 三角形最小路径和**
   1.递归：` Triangle(i,j){
     Triangle(i+1,j)
@@ -1293,6 +1326,54 @@ class Solution:
         return True if res else False
 ```
 
+- **8. 字符串转换整数 (atoi)**
+```python
+class Solution:
+    def myAtoi(self, str: str) -> int:
+        MAX = 2 ** 31 - 1
+        MIN = -2 ** 31
+        import re
+        matches = re.match('[ ]*([+-]?\d+)', str)
+        if matches:
+            res = int(matches.group(1))
+            if res > MAX:
+                return MAX
+            elif res < MIN:
+                return MIN
+            else:
+                return res
+        else:
+            return 0
+```
+
+## 组合排列
+- **78. 子集**
+```python
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        res = [[]]
+        for num in nums:
+            res += [[num] + cur for cur in res]      
+        return res
+```
+- **46. 全排列**
+```python
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        n = len(nums)
+        res = []
+        def fun(nums, visited, cur, n):
+            if n == 0:
+                res.append(cur)
+            for i in range(len(nums)):
+                if not visited[i]:
+                    visited[i] = 1
+                    fun(nums, visited, cur+[nums[i]],n-1)
+                    visited[i] = 0
+        fun(nums, [0]*n, [], n)
+        return res
+```
+
 ## 数学推导
 - **剑指 Offer 14- I. 剪绳子/343. 整数拆分**
 1.数学归纳法推导出等分成3的倍数，乘积最大
@@ -1350,9 +1431,7 @@ class Solution:
             res = (rand7()-1)*7+rand7()
         return res
 ```
-
 还可以充分利用有效区间进行取模优化
-
 ```python
 class Solution:
     def rand10(self):
@@ -1368,7 +1447,6 @@ class Solution:
 
 
 ## 其他
-
 - **14. 最长公共前缀**
 法1:python特性，元组拆包实现，比较骚，但是要注意一旦出现非前缀要记得break，否则会把后缀都加到结果里
 ```python
