@@ -862,6 +862,17 @@ class Solution:
 - **70 爬楼梯**
   1.递归： climbStairs(self,int-1)+ climbStairs(self,int-2)，可用一个数组存值，避免重复计算
   2.DP：`dp[i] = dp[i - 1] + dp[i - 2]`，`dp[n]`为到第n层的总走法
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        if n < 3: return n
+        a, b = 1, 2
+        for _ in range(2, n):
+            c = a+b
+            a = b
+            b = c
+        return b
+```
 - **120. 三角形最小路径和**
   1.递归：` Triangle(i,j){
     Triangle(i+1,j)
@@ -930,6 +941,9 @@ class Solution:
    状态方程：`dp[i][0]=a[i]>=0?dp[i-1][0]*a[i]:dp[i-1][1]*a[i]（即正数=最大值*自身，负数=最小值*自身）
              dp[i][1]=a[i]>=0?dp[i-1][1]*a[i]:dp[i-1][0]*a[i]（即正数=最小值*自身，负数=最小值*自身）
              return dp[i][0]里最大的一个`
+```python
+
+```
 - **121（1次） 122（无数次） 123（2次） 309（冷静期） 188（k次） 714（含手续费） 股票买卖系列问题**
   1.暴力掠过
   2.dp:状态需要三层`dp[i][k][j]`，第一层为cur天数0~n-1，第二层为当前操作的笔数k，第三层为当前是否持有股票0/1（未持有/持有）
@@ -942,9 +956,15 @@ class Solution:
    `O(N*K)`
    扩展：（1）冷却情况可以把k改成0，1，记录冷却情况（2）如果可以持有M股，一次交易一股，可以把j改成M，max（买，卖，不动），但是要处理很多边界情况，O(N*K*M)
    **注意：需要对所有k的情况进行一个初始化base case，其次k的循环也是从1开始！**
+```python
+
+```
 - **300 最长上升子序列（不用连续）**
   1.DP：两层循环，i循环0到n-1，j循环0到i-1，如果a[i]大于a[j]：dp[i]=dp[j]+1，O（N*N）
   2.二分插入：每一个新的数进来，比右界大就右端插入，比右界小就更新右界，O（NlogN）
+```python
+
+```
 - **322 零钱兑换**
   1.暴力法：dfs循环N层遍历（零钱的种类），把所有可能性遍历出来计算最小的count值
   2.DP：类比dp爬楼梯，爬楼梯是1/2步，现在扩展到不同的面值
@@ -955,6 +975,9 @@ class Solution:
            dp[i] = min(dp[i - coins[j]] + 1, dp[i])
    return：return dp[i] if dp[i] < amount+1 else -1
    `O(X*N)`
+```python
+
+```
 - **72 编辑距离**单词1变到单词2最小的变动次数
   1.暴力法：对于每一个字符串word1和word2，用dfs或者bfs做单词操作的遍历
   2.DP：字符串问题使用dp的一种解法
@@ -966,6 +989,9 @@ class Solution:
                  dp[i][j]=min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1
              return dp[m][n]`
    **注意：如果每种操作的开销不同，就在min里面给每个操作加上额外的开销**
+```python
+
+```
 - **5. 最长回文子串**
   `dp[i][j]`状态表示i到j是否是回文串，只有当回文字串加上前后相同字母的时候才是回文字串，但是状态转移的时候不能直接i，j循环，那样会丢失部分状态，而是按照字串长度l循环，j = i + l，先循环l后循环i，l为0和1的时候单独处理。
 ```python
@@ -1004,6 +1030,22 @@ class Solution:
                     dp[j] = True
         return dp[-1]
 ```
+- **64. 最小路径和**
+```python
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        m, n = len(grid), len(grid[0])
+        dp = [[0]*n for _ in range(m)]
+        dp[0][0] = grid[0][0]
+        for i in range(1,m):
+            dp[i][0] = dp[i-1][0] + grid[i][0]
+        for j in range(1,n):
+            dp[0][j] = dp[0][j-1] + grid[0][j]
+        for i in range(1, m):
+            for j in range(1, n):
+                dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j]
+        return dp[-1][-1]
+```
 ## 并查集find&union
 - 1.不相交的集合结构
   2.两种优化：（1）增加一个rank表示集合的深度（2）路径压缩：把所有集合都改成两层深度，都指向根节点
@@ -1033,23 +1075,6 @@ class Solution:
                 if M[i][j] and find(i)!=find(j):
                     union(i, j)
         return self.count  
-```
-
-- **64. 最小路径和**
-```python
-class Solution:
-    def minPathSum(self, grid: List[List[int]]) -> int:
-        m, n = len(grid), len(grid[0])
-        dp = [[0]*n for _ in range(m)]
-        dp[0][0] = grid[0][0]
-        for i in range(1,m):
-            dp[i][0] = dp[i-1][0] + grid[i][0]
-        for j in range(1,n):
-            dp[0][j] = dp[0][j-1] + grid[0][j]
-        for i in range(1, m):
-            for j in range(1, n):
-                dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j]
-        return dp[-1][-1]
 ```
 
 ## LRU缓存
