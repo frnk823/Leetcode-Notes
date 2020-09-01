@@ -1485,8 +1485,28 @@ class Solution:
                 return str0[:i]
         return str0
 ```
-
-
+- **剑指 Offer 29. 顺时针打印矩阵**
+就递归一圈一圈打印
+```python
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        if not matrix: return []
+        top, bottom, left, right = 0, len(matrix)-1, 0, len(matrix[0])-1
+        res = []
+        while top <= bottom and left <= right:
+            for i in range(left, right+1):
+                res.append(matrix[top][i])
+            for i in range(top+1, bottom+1):
+                res.append(matrix[i][right])
+            if top < bottom and left < right:
+                for i in range(right-1, left, -1):
+                    res.append(matrix[bottom][i])
+                for i in range(bottom, top, -1):
+                    res.append(matrix[i][left])
+            top, bottom, left, right = top+1, bottom-1, left+1, right-1
+        return res
+            
+```
 
 ## 字节手撕整理
 https://www.nowcoder.com/discuss/455003?type=post&order=create&pos=&page=1&channel=1011&source_id=search_post 
