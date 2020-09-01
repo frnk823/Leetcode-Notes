@@ -65,6 +65,26 @@ https://www.nowcoder.com/discuss/491184?type=1&channel=666&source_id=discuss_ter
 浅拷贝可以复制非引用型参数，但是引用型参数还是没有复制一份新的（继承Cloneable接口并重写clone方法）
 深拷贝连引用型参数也完全拷贝一份，需要引用型参数本身的类也继承Cloneable接口并重写clone方法（依然继承Cloneable接口并重写clone方法 or clone方法里使用序列化和反序列化进行深拷贝但是要求其引用的对象本身支持序列化即继承Serializable接口）
 
+## 设计模式
+单例模式（饿汉式、懒汉式、静态内部类式）
+```Java
+public class Singleton {
+    private volatile static Singleton uniqueInstance;
+    private Singleton() {
+    }
+    public static Singleton getUniqueInstance() {
+        if (uniqueInstance == null) {
+            synchronized (Singleton.class) {
+                if (uniqueInstance == null) {
+                    uniqueInstance = new Singleton();
+                }
+            }
+        }
+        return uniqueInstance;
+    }
+}
+```
+
 ## 字符串
 -**字符串常量池**
 只有直接双引号生成的字符串才在字符串池中，new的不在池子里
