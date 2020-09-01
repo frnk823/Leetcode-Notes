@@ -419,6 +419,19 @@ class Solution:
   1.路径法：遍历两个节点的路径，取最后出现的公共点即最早公共祖先。（还可以从后往前，取最早出现的祖先，但是需要有父指针），O（N），遍历部分有重复
   2.recursion递归：分别递归查找左右子树里是否含有p和q，具体看代码，O（N），比法1遍历次数少一些
   3.235里用二叉搜索树，只要判断root.val介于p和q之间就是最早公共祖先，法2的递归变种一下就行，非递归也可以写
+  ```python
+  class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        if not root or root == p or root == q:
+            return root
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+        if not left:
+            return right
+        if not right:
+            return left
+        return root
+  ```
 - **树的遍历**：前/中/后序指的是根节点的访问顺序，在二叉搜索树中会得到不一样的顺序结果（比如中序遍历-升序序列）
 - **105. 从前序与中序遍历序列构造二叉树**
 ```python
@@ -1443,8 +1456,6 @@ class Solution:
             res = (rand7()-1)*7+rand7()
         return 1+res%10
 ```
-
-
 
 ## 其他
 - **14. 最长公共前缀**
