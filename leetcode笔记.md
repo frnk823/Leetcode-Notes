@@ -866,6 +866,26 @@ class Solution:
             res += 1
         return res
 ```
+- **剑指 Offer 56 - I. 数组中数字出现的次数**
+```python
+class Solution:
+    def singleNumbers(self, nums: List[int]) -> List[int]:
+        tmp = 0
+        for i in nums:
+            tmp ^= i
+        pivot = tmp & -tmp
+        nums1 = [i for i in nums if i & pivot == 0]
+        nums2 = [i for i in nums if i & pivot != 0]
+        tmp = 0
+        for i in nums1:
+            tmp ^= i
+        res1 = tmp
+        tmp = 0
+        for i in nums2:
+            tmp ^= i
+        res2 = tmp
+        return [res1, res2]
+```
 
 - **231 二的次方数**
   1.mod2
