@@ -781,7 +781,22 @@ class Solution:
         res.append(right)
         return res
 ```
-
+- **162. 寻找峰值**
+```python
+class Solution:
+    def findPeakElement(self, nums: List[int]) -> int:
+        low = 0
+        high = len(nums) - 1 
+        while low < high:
+            mid = (low + high) >> 1
+            if mid == len(nums) - 1:
+                return mid
+            if nums[mid] < nums[mid+1]:
+                low = mid + 1
+            else:
+                high = mid 
+        return low
+```
 ## Trie树-字典树
 - 树形结构，哈希树的变种。应用于统计和排序大量字符串，常用于搜索引擎词频统计，可以减少字符串的比较次数，查找效率比哈希表高。
 - 用空间换取时间，并且可以利用公共前缀来降低查询时间的开销
