@@ -1086,7 +1086,17 @@ print(count)
   1.DP：两层循环，i循环0到n-1，j循环0到i-1，如果a[i]大于a[j]：dp[i]=dp[j]+1，O（N*N）
   2.二分插入：每一个新的数进来，比右界大就右端插入，比右界小就更新右界，O（NlogN）
 ```python
-
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        if not nums: return 0
+        n,res = len(nums), 1
+        dp = [1 for _ in range(n)]
+        for i in range(n):
+            for j in range(i):
+                if nums[i]>nums[j]:
+                    dp[i] = max(dp[j] + 1, dp[i])
+                    res = max(res, dp[i])
+        return res
 ```
 - **322 零钱兑换**
   1.暴力法：dfs循环N层遍历（零钱的种类），把所有可能性遍历出来计算最小的count值
