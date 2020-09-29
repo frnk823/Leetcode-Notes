@@ -225,6 +225,23 @@ class Solution:
         pre.next = cur.next
         return dummy.next
 ```
+- **2. 两数相加**
+```python
+class Solution:
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+        dummy = ListNode(0);
+        cur = dummy
+        res = 0
+        while res > 0 or l1  or l2:
+            res += l1.val if l1 else 0
+            res += l2.val if l2 else 0
+            cur.next = ListNode(res % 10)
+            cur = cur.next
+            res = res // 10
+            if l1 : l1 = l1.next
+            if l2 : l2 = l2.next
+        return dummy.next
+```
 
 ## stack/queue
 - **20 判断括号是否有效**
